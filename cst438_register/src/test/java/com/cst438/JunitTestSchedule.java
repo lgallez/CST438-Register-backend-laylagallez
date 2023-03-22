@@ -30,6 +30,7 @@ import com.cst438.domain.Enrollment;
 import com.cst438.domain.EnrollmentRepository;
 import com.cst438.domain.ScheduleDTO;
 import com.cst438.domain.Student;
+import com.cst438.domain.StudentDTO;
 import com.cst438.domain.StudentRepository;
 import com.cst438.service.GradebookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -210,6 +211,64 @@ public class JunitTestSchedule {
 	
 		// verify that repository delete method was called.
 		verify(enrollmentRepository).delete(any(Enrollment.class));
+	}
+	
+	@Test
+	public void addStudent() throws Exception {
+		
+		MockHttpServletResponse response;
+		
+		StudentDTO testStudent = new StudentDTO()
+									.setStudentName("Test Name")
+									.setEmail("test@email.com");
+	
+		response = mvc.perform(
+				MockMvcRequestBuilders
+			      .post("/student/create")
+			      .content(asJsonString(testStudent))
+			      .contentType(MediaType.APPLICATION_JSON)
+			      .accept(MediaType.APPLICATION_JSON))
+				.andReturn().getResponse();
+		
+		// verify that return status = OK (value 200) 
+		assertEquals(200, response.getStatus());
+		
+		// verify that repository insert method was called.
+		verify(studentRepository).save(any(Student.class));
+	}
+	
+	@Test
+	public void changeStudentStatus() throws Exception {
+		
+		MockHttpServletResponse response;
+		
+		Student student = new Student();
+		student.setEmail(TEST_STUDENT_EMAIL);
+		student.setName(TEST_STUDENT_NAME);
+		student.setStatusCode(0);
+		student.setStudent_id(1);
+
+		given(studentRepository.findById(1)).willReturn(Optional.of(student));
+		
+		StudentDTO studentDTO = new StudentDTO()
+				.setEmail(TEST_STUDENT_EMAIL)
+				.setStudentName(TEST_STUDENT_NAME)
+				.setStudentStatus(1);
+		
+		// then 
+		response = mvc.perform(
+				MockMvcRequestBuilders
+			      .post("/student/update")
+			      .content(asJsonString(studentDTO))
+			      .contentType(MediaType.APPLICATION_JSON)
+			      .accept(MediaType.APPLICATION_JSON))
+				.andReturn().getResponse();
+		
+		// verify that return status = OK (value 200) 
+		assertEquals(200, response.getStatus());
+	
+		// verify that repository delete method was called.
+		verify(studentRepository).save(any(Student.class));
 	}
 		
 	private static String asJsonString(final Object obj) {

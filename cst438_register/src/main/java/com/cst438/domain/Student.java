@@ -23,32 +23,37 @@ public class Student {
 	public int getStudent_id() {
 		return student_id;
 	}
-	public void setStudent_id(int student_id) {
+	public Student setStudent_id(int student_id) {
 		this.student_id = student_id;
+		return this;
 	}
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
+	public Student setName(String name) {
 		this.name = name;
+		return this;
 	}
 	public String getEmail() {
 		return email;
 	}
-	public void setEmail(String email) {
+	public Student setEmail(String email) {
 		this.email = email;
+		return this;
 	}
 	public int getStatusCode() {
 		return statusCode;
 	}
-	public void setStatusCode(int statusCode) {
+	public Student setStatusCode(int statusCode) {
 		this.statusCode = statusCode;
+		return this;
 	}
 	public String getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public Student setStatus(String status) {
 		this.status = status;
+		return this;
 	}
 	@Override
 	public String toString() {
